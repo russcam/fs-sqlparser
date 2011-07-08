@@ -1,58 +1,39 @@
-﻿
-module Sql
+﻿module Sql
 
 open System
 
-type alias = Alias of string
-type dot = Dot of string
-type dbo = Dbo 
-
 type ISql =
    abstract member toSql : unit -> string
-
-let rec map func lst =  
-    match lst with
-        | [] -> []
-        | hd :: tl -> func(hd) :: map func tl
-
-         
-let toSqlFun (isql: ISql) = 
-    isql.toSql()
-
+        
 let toSql (isql: ISql) =
     isql.toSql()
 
 let castUpToISql valIn = 
     valIn :> ISql
 
-type table = 
-    | Table of (dbo option * string)
-    | AliassedTable of (alias * table )
-    interface ISql with
-        member this.toSql() =
-            match this with
-                    | Table(Some(d), str) -> "dbo." + str
-                    | Table(None, str) -> str
-                    | AliassedTable(Alias(al), tbl) -> toSql tbl + " AS " + al
-    end
+//This allows me to apply a function to an option type without writing the pattern matching every time
+let apply op func = 
+    match op with   
+        | Some(a) -> func a
+        | None -> ""
 
-    member this.Rename (oldName: string) newName = 
-            match this with
-                    | Table(d, name) -> if name.ToLower() = oldName.ToLower() then Table(d, newName) else this
-                    | AliassedTable(Alias(name), tb)   
-                        -> if name.ToLower() = oldName.ToLower() then AliassedTable(Alias(newName), tb) else this
+//This allows to concatenate two option types
+let mergeOptions op1 op2 mergeFun = 
+    match op1 with
+        | Some(vl1) ->
+            match op2 with
+                | Some(vl2) -> Some(mergeFun(vl1, vl2))
+                | None -> op1
+        | None ->
+            match op2 with
+                | Some(vl2) -> op2
+                | None -> None
 
-    member this.Alias (oldName: string) newName =
-            match this with
-                    | Table(d, name) 
-                        -> if name.ToLower() = oldName.ToLower() then AliassedTable(Alias(newName), this) else this
-                    | _ -> this.Rename oldName newName
-
-
-type functionName = FunctionName of string
-
+//This takes a list and does toSql on each item
+//The match is a bit different that usual
+//It is this way so that you have "A, B, C" instead of "A, B, C,"
 let mapReduce delim (lstIn: 'A list)  =
-    let lst = map castUpToISql lstIn
+    let lst = List.map castUpToISql lstIn
     let rec mapReduceISql delim (lst: ISql list) =
         match lst with
             | [] -> ""
@@ -61,6 +42,37 @@ let mapReduce delim (lstIn: 'A list)  =
             | hd :: tl -> hd.toSql() + delim + mapReduceISql delim tl
     mapReduceISql delim lst
 
+type alias = Alias of string
+type dot = Dot of string
+type dbo = Dbo 
+type functionName = FunctionName of string
+
+//TODO change into schema instead of DBO
+type table = 
+    | Table of (dbo option * string)
+    | AliassedTable of (table * alias)
+    interface ISql with
+        member this.toSql() =
+            match this with
+                    | Table(Some(_), str) -> "dbo." + str
+                    | Table(None, str) -> str
+                    | AliassedTable(tbl, Alias(al)) -> toSql tbl + " AS " + al
+    end
+
+    member this.Rename (oldName: string) newName = 
+            match this with
+                    | Table(_, name) -> if name.ToLower() = oldName.ToLower() then AliassedTable(this, Alias(newName)) else this
+                    | AliassedTable(tb, Alias(name))   
+                        -> if name.ToLower() = oldName.ToLower() then AliassedTable(tb, Alias(newName)) else this
+
+    member this.Alias (oldName: string) newName =
+            match this with
+                    | Table(d, name) 
+                        -> if name.ToLower() = oldName.ToLower() then AliassedTable(this, Alias(newName)) else this
+                    | _ -> this.Rename oldName newName
+
+//When we Alias a value, should we add square brackets? That way we would be sure that we can use any string as an alias
+//TODO RENAME "RENAME" TO ALIAS
 type value =   
     | Int of string  
     | Float of string  
@@ -68,11 +80,13 @@ type value =
     | Field of string
     | TableField of table * value
     | Function of (dbo option * functionName * value list)
+    | AliassedValue of (value * string)
     with 
         member this.Rename oldName newName =
             match this with
                 | TableField(tbl, fld) -> TableField(tbl.Rename oldName newName, fld)
-                | Function(d, f, vals) -> Function(d, f, vals |> map (fun vl -> vl.Rename oldName newName))
+                | Function(d, f, vals) -> Function(d, f, vals |> List.map (fun vl -> vl.Rename oldName newName))
+                | AliassedValue(vl, str) -> AliassedValue(vl.Rename oldName newName, str)
                 | _ -> this
         interface ISql with 
             member this.toSql() = 
@@ -86,6 +100,7 @@ type value =
                         -> name + "(" + (mapReduce   ", " vals ) + ")"
                     | Function(Some(d), FunctionName(name), vals) 
                         -> "dbo." + name + "(" + (vals |> mapReduce ", ") + ")"
+                    | AliassedValue(vl, str) -> toSql vl + " AS " + str
 
 
 type dir = Asc | Desc   
@@ -155,12 +170,6 @@ type join = Join of (table * joinType * where option)   // table name, join, opt
                     | Join(tbl, jn, Some(whr)) -> toSql jn + " " + toSql tbl + " ON " + toSql whr
                     | Join(tbl, jn, _) -> toSql jn + " " + toSql tbl 
 
-
-let apply op func = 
-    match op with   
-        | Some(a) -> func a
-        | None -> ""
-
 type top = 
     | Top of (string)
     | TopPercent of (string)
@@ -178,6 +187,7 @@ type sqlStatement =
         Where : where option;   
         OrderBy : order list }
     with 
+        //Here we recreate a proper SQL string. Note that all previous formatting will be lost at the parser
         member this.toSql =
             "SELECT " 
             + apply this.TopN toSql 
@@ -189,28 +199,19 @@ type sqlStatement =
         member this.RenameTables oldName newName = 
           { TopN = this.TopN;
             Table1 = this.Table1.Alias oldName newName;
-            Columns = this.Columns |> map  (fun col -> col.Rename oldName newName);
-            Joins = this.Joins |> map (fun jn -> jn.AliasTables oldName newName);
+            Columns = this.Columns |> List.map  (fun col -> col.Rename oldName newName);
+            Joins = this.Joins |> List.map (fun jn -> jn.AliasTables oldName newName);
             Where = 
                 match this.Where with
                     | Some(wh) -> Some(wh.Rename oldName newName);
                     | None -> None;
-            OrderBy = this.OrderBy |> map (fun ob -> ob.Rename oldName newName); }
+            OrderBy = this.OrderBy |> List.map (fun ob -> ob.Rename oldName newName); }
 
-
-let mergeOptions op1 op2 mergeFun = 
-    match op1 with
-        | Some(vl1) ->
-            match op2 with
-                | Some(vl2) -> Some(mergeFun(vl1, vl2))
-                | None -> op1
-        | None ->
-            match op2 with
-                | Some(vl2) -> op2
-                | None -> None
+//Here I'm building a merge function in order to merge 2 different queries
+//The type signature shows a bit how I intend to do it
 //
 //let merge (smt1: sqlStatement) (smt2: sqlStatement) (jn: join) =
-//    {   TopN = mergeOptions smt1.TopN smt2.TopN (fun a b -> Int
+//    {   TopN = mergeOptions smt1.TopN smt2.TopN (fun a b -> ??)    //Still deciding what to do here? Should we pick the largest one? But what if one is in percent and the other is not?
 //        Table1 = smt1.Table1;
 //        Columns = List.append smt1.Columns smt2.Columns;
 //        Joins = List.append smt1.Joins smt2.Joins;

@@ -1,7 +1,7 @@
 ﻿open System
 
 let x = "   
-        SELECT top 1 t1.x, fun(y), dbo.fun(y)
+        SELECT top 1 t1.x, fun(y) as funny, dbo.fun(y)
         FROM t1   
         LEFT JOIN t2
         INNER JOIN t3 ON t3.ID = t2.ID   
