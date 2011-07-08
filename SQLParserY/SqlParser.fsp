@@ -1,0 +1,106 @@
+﻿%{   
+//module SqlParser
+open Sql   
+%}   
+ 
+%token <string> ID   
+%token <string> INT   
+%token <string> FLOAT   
+
+%token AND OR LPAREN RPAREN  
+%token COMMA DOT  
+%token EQ LT LE GT GE   
+%token JOIN INNER LEFT RIGHT ON   
+%token SELECT FROM WHERE ORDER BY   
+%token AS DBO TOP PERCENT
+%token ASC DESC   
+%token EOF   
+ 
+// start   
+%start start   
+%type <Sql.sqlStatement> start   
+ 
+%%   
+ 
+
+
+start:  SELECT topn valueList   
+        FROM table   
+        joinList   
+        whereClause   
+        orderByClause   
+        EOF                 {   
+                                { TopN = $2; 
+                                  Table1 = $5; 
+                                  Columns = $3;   
+                                  Joins = $6;   
+                                  Where = $7;   
+                                  OrderBy = $8 }   
+                            }   
+
+topn:
+	|										{ None }
+	| TOP INT								{ Some(Top($2)) }
+	| TOP INT PERCENT						{ Some(TopPercent($2)) } 
+
+table:
+	| DBO DOT ID							{ Table(Some(Dbo), $3) }
+	| ID									{ Table(None, $1) }
+	| table AS ID							{ AliassedTable(Alias($3), $1) }
+
+
+// join clause   
+joinList:   
+    |										{ [] }   
+    | joinClause							{ [$1] }   
+    | joinClause joinList					{ $1 :: $2 }       
+ 
+joinClause:   
+    | INNER JOIN table joinOnClause			{ Join($3, Inner, $4) }   
+    | LEFT JOIN table joinOnClause			{ Join($3, Left, $4) }   
+    | RIGHT JOIN table joinOnClause			{ Join($3, Right, $4) }   
+ 
+joinOnClause:   
+    |										{ None }   
+    | ON conditionList						{ Some($2) }   
+ 
+conditionList:   
+    | value op value						{ Cond($1, $2, $3) }   
+    | value op value AND conditionList		{ And(Cond($1, $2, $3), $5) }   
+    | value op value OR conditionList		{ Or(Cond($1, $2, $3), $5) }   
+ 
+// where clause   
+whereClause:   
+    |										{ None }   
+    | WHERE conditionList					{ Some($2) }   
+ 
+op: EQ { Eq } | LT { Lt } | LE { Le } | GT { Gt } | GE { Ge }   
+ 
+value:   
+    | INT									{ Int($1) }   
+    | FLOAT									{ Float($1) }
+	| ID LPAREN valueList RPAREN			{ Function(None, FunctionName($1), $3)}  
+	| DBO DOT ID LPAREN valueList RPAREN	{ Function(Some(Dbo), FunctionName($3), $5)}
+	| table DOT ID							{ TableField($1, Field($3)) } 
+    | ID									{ Field($1) }   
+
+valueList:
+	|										{ [] }   
+    | value									{ [$1] }   
+    | value COMMA valueList					{ $1 :: $3 }        
+
+// order by clause   
+orderByClause:   
+    |								        { [] }   
+    | ORDER BY orderByList			        { $3 }   
+ 
+orderByList:   
+    | orderBy								{ [$1] }   
+    | orderBy COMMA orderByList				{ $1 :: $3 }   
+ 
+orderBy:   
+    | value									{ Order($1, None) }   
+    | value ASC								{ Order($1, Some(Asc)) }   
+    | value DESC							{ Order($1, Some(Desc)) }   
+ 
+%%
