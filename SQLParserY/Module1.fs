@@ -12,8 +12,6 @@ let parseit x =
     try
         let y = SqlParser.start SqlLexer.tokenize lexbuf 
         printfn "%A" y  
-        let z = y.RenameTables "T1" "X1"
-        printfn "%A" z
-        printfn "%A" z.toSql
+        printfn "%A" y.toSql  
     with
        | ex -> printfn "%A" ex
