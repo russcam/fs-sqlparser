@@ -25,7 +25,7 @@ open Sql
 
 
 start:  SELECT topn valueList   
-        FROM table   
+        FROM aliasableTable   
         joinList   
         whereClause   
         orderByClause   
@@ -43,10 +43,6 @@ topn:
 	| TOP INT								{ Some(Top($2)) }
 	| TOP INT PERCENT						{ Some(TopPercent($2)) } 
 
-table:
-	| DBO DOT ID							{ Table(Some(Dbo), $3) }
-	| ID									{ Table(None, $1) }
-	| table AS ID							{ AliassedTable($1, Alias($3)) }
 
 
 // join clause   
@@ -56,10 +52,14 @@ joinList:
     | joinClause joinList					{ $1 :: $2 }       
  
 joinClause:   
-    | INNER JOIN table joinOnClause			{ Join($3, Inner, $4) }   
-    | LEFT JOIN table joinOnClause			{ Join($3, Left, $4) }   
-    | RIGHT JOIN table joinOnClause			{ Join($3, Right, $4) }   
+    | INNER JOIN aliasableTable joinOnClause			{ Join($3, Inner, $4) }   
+    | LEFT JOIN aliasableTable joinOnClause				{ Join($3, Left, $4) }   
+    | RIGHT JOIN aliasableTable joinOnClause			{ Join($3, Right, $4) }   
  
+aliasableTable:
+	| table									{ $1 }
+	| table AS ID							{ AliassedTable($1, Alias($3)) }
+
 joinOnClause:   
     |										{ None }   
     | ON conditionList						{ Some($2) }   
@@ -75,15 +75,21 @@ whereClause:
     | WHERE conditionList					{ Some($2) }   
  
 op: EQ { Eq } | LT { Lt } | LE { Le } | GT { Gt } | GE { Ge }   
- 
+
+table: 
+	| ID									{ Table(None, $1) }
+	| ID DOT ID								{ Table(Some(Schema($1)), $3) }
+
 value:   
 	| value AS ID							{ AliassedValue($1, $3) }
     | INT									{ Int($1) }   
     | FLOAT									{ Float($1) }
 	| ID LPAREN valueList RPAREN			{ Function(None, FunctionName($1), $3)}  
-	| DBO DOT ID LPAREN valueList RPAREN	{ Function(Some(Dbo), FunctionName($3), $5)}
-	| table DOT ID							{ TableField($1, Field($3)) } 
-    | ID									{ Field($1) }   
+	| ID DOT ID LPAREN valueList RPAREN		{ Function(Some(Schema($1)), FunctionName($3), $5)}
+//Somehow I couldn't make it work by referencing table and had to write it all out to get it to work
+    | ID DOT ID DOT ID						{ TableField(Table(Some(Schema($1)), $3),Field($5)) }
+	| ID DOT ID								{ TableField(Table(None, $1),Field($3)) }
+	| ID									{ Field($1) }   
 
 valueList:
 	|										{ [] }   

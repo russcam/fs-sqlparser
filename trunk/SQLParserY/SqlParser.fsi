@@ -70,13 +70,14 @@ type nonTerminalId =
     | NONTERM__startstart
     | NONTERM_start
     | NONTERM_topn
-    | NONTERM_table
     | NONTERM_joinList
     | NONTERM_joinClause
+    | NONTERM_aliasableTable
     | NONTERM_joinOnClause
     | NONTERM_conditionList
     | NONTERM_whereClause
     | NONTERM_op
+    | NONTERM_table
     | NONTERM_value
     | NONTERM_valueList
     | NONTERM_orderByClause

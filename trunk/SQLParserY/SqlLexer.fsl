@@ -23,7 +23,6 @@ let keywords =
         "OR", OR;   
         "ON", ON;   
         "AS", AS;
-        "DBO", DBO;
         "PERCENT", PERCENT;
         "TOP", TOP;
     ] |> Map.ofList   

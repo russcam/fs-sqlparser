@@ -44,17 +44,16 @@ let mapReduce delim (lstIn: 'A list)  =
 
 type alias = Alias of string
 type dot = Dot of string
-type dbo = Dbo 
+type schema = Schema of string 
 type functionName = FunctionName of string
 
-//TODO change into schema instead of DBO
 type table = 
-    | Table of (dbo option * string)
+    | Table of (schema option * string)
     | AliassedTable of (table * alias)
     interface ISql with
         member this.toSql() =
             match this with
-                    | Table(Some(_), str) -> "dbo." + str
+                    | Table(Some(Schema(schemaName)), str) -> schemaName + "." + str
                     | Table(None, str) -> str
                     | AliassedTable(tbl, Alias(al)) -> toSql tbl + " AS " + al
     end
@@ -67,7 +66,7 @@ type table =
 
     member this.Alias (oldName: string) newName =
             match this with
-                    | Table(d, name) 
+                    | Table(_, name) 
                         -> if name.ToLower() = oldName.ToLower() then AliassedTable(this, Alias(newName)) else this
                     | _ -> this.Rename oldName newName
 
@@ -79,13 +78,13 @@ type value =
     | String of string  
     | Field of string
     | TableField of table * value
-    | Function of (dbo option * functionName * value list)
+    | Function of (schema option * functionName * value list)
     | AliassedValue of (value * string)
     with 
         member this.Rename oldName newName =
             match this with
                 | TableField(tbl, fld) -> TableField(tbl.Rename oldName newName, fld)
-                | Function(d, f, vals) -> Function(d, f, vals |> List.map (fun vl -> vl.Rename oldName newName))
+                | Function(sch, fName, vals) -> Function(sch, fName, vals |> List.map (fun vl -> vl.Rename oldName newName))
                 | AliassedValue(vl, str) -> AliassedValue(vl.Rename oldName newName, str)
                 | _ -> this
         interface ISql with 
@@ -98,8 +97,8 @@ type value =
                     | TableField(tbl, fld) -> toSql tbl + "." + toSql fld                 
                     | Function(None, FunctionName(name), vals) 
                         -> name + "(" + (mapReduce   ", " vals ) + ")"
-                    | Function(Some(d), FunctionName(name), vals) 
-                        -> "dbo." + name + "(" + (vals |> mapReduce ", ") + ")"
+                    | Function(Some(Schema(schemaName)), FunctionName(name), vals) 
+                        -> schemaName + "." + name + "(" + (vals |> mapReduce ", ") + ")"
                     | AliassedValue(vl, str) -> toSql vl + " AS " + str
 
 
@@ -195,7 +194,7 @@ type sqlStatement =
             + " FROM " + toSql this.Table1 
             + " " + (this.Joins |> mapReduce " ")
             + apply this.Where (fun whr -> " WHERE " + toSql whr)
-            + " ORDER BY " + (this.OrderBy |> mapReduce ", ")
+            + (if this.OrderBy.Length > 0 then " ORDER BY " + (this.OrderBy |> mapReduce ", ") else "")
         member this.RenameTables oldName newName = 
           { TopN = this.TopN;
             Table1 = this.Table1.Alias oldName newName;
