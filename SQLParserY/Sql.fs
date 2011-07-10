@@ -2,15 +2,6 @@
 
 open System
 
-//type ISql =
-//   abstract member toSql : unit -> string
-        
-//let toSql (isql: ISql) =
-//    isql.toSql()
-
-//let castUpToISql valIn = 
-//    valIn :> ISql
-
 //This allows me to apply a function to an option type without writing the pattern matching every time
 let apply op func = 
     match op with   
@@ -28,20 +19,6 @@ let mergeOptions op1 op2 mergeFun =
             match op2 with
                 | Some(vl2) -> op2
                 | None -> None
-
-////This takes a list and does toSql on each item
-////The match is a bit different that usual
-////It is this way so that you have "A, B, C" instead of "A, B, C,"
-//let mapReduce delim (lstIn: 'A list)  =
-////    let lst = List.map castUpToISql lstIn
-//    let rec mapReduceISql delim (lst: ISql list) =
-//        match lst with
-//            | [] -> ""
-//            | hd :: [] -> hd.toSql()
-//            | hd :: tl :: [] -> hd.toSql() + delim + tl.toSql()
-//            | hd :: tl -> hd.toSql() + delim + mapReduceISql delim tl
-//    mapReduceISql delim lst
-
 
 let rec mapReduce delim lst func =
     match lst with
@@ -82,8 +59,7 @@ type table =
     member this.Name =
             match this with
                     | Table(_, tbl) -> tbl
-                    | AliassedTable(tb, Alias(name))
-                        -> name
+                    | AliassedTable(tb, Alias(name)) -> name
     
 //When we Alias a value, should we add square brackets? That way we would be sure that we can use any string as an alias
 //TODO RENAME "RENAME" TO ALIAS
@@ -112,22 +88,33 @@ type value =
                     | Function(sch, fName, vals) -> 
                         match sch with
                             | Some(sch) -> sch.Name + "." + fName.Name + "(" + (mapReduce ", " vals (fun vl -> vl.Name)) + ")"
-                            | _ -> fName.Name
-//                    | AliassedValue(vl, str) -> ""
-//                        match vl with
-//                            | Some(Schema(name)) -> name
-                    | _ -> ""
+                            | None -> fName.Name + "(" + (mapReduce ", " vals (fun vl -> vl.Name)) + ")"
+                    | AliassedValue(vl, str) -> vl.Name + " AS " + str
 
 type dir = Asc | Desc   
+    with member this.Name = 
+            match this with 
+                | Asc -> "ASC "
+                | Desc -> "DESC "
 
 type op = Eq | Gt | Ge | Lt | Le   
+    with member this.Name = 
+            match this with 
+                | Eq -> "= "
+                | Gt -> "> "
+                | Ge -> ">= "
+                | Lt -> "< "
+                | Le -> "<= "
 
 type order = Order of (value * dir option)
     with 
         member this.Rename oldName newName =
             match this with
                 | Order(vl, drOp) -> Order(vl.Rename oldName newName, drOp)
-
+        member this.Name = 
+            match this with
+                | Order(vl, Some(dr)) -> vl.Name + dr.Name
+                | Order(vl, _) -> vl.Name
 
 type where =   
     | Cond of (value * op * value)   
@@ -139,8 +126,19 @@ type where =
                 | Cond(val1, op1, val2) -> Cond(val1.Rename oldName newName, op1, val2.Rename oldName newName)
                 | And(val1, val2) -> And(val1.Rename oldName newName, val2.Rename oldName newName)
                 | Or(val1, val2) -> Or(val1.Rename oldName newName, val2.Rename oldName newName)
+        member this.Name =
+            match this with
+                | Cond(val1, op1, val2) -> val1.Name + " " + op1.Name + val2.Name
+                | And(val1, val2) -> val1.Name + " AND \n\t" + val2.Name
+                | Or(val1, val2) ->  val1.Name + " OR \n\t" + val2.Name
 
 type joinType = Inner | Left | Right | Outer
+    with member this.Name = 
+            match this with 
+                | Inner -> "INNER JOIN "
+                | Left -> "LEFT JOIN "
+                | Right -> "RIGHT JOIN "
+                | Outer -> "OUTER JOIN "
 
 type join = Join of (table * joinType * where option)   // table name, join, optional "on" clause   
     with 
@@ -148,6 +146,10 @@ type join = Join of (table * joinType * where option)   // table name, join, opt
             match this with
                 | Join(tbl, jn, Some(whr)) -> Join((tbl.Alias oldName newName), jn, Some(whr.Rename oldName newName))
                 | Join(tbl, jn, _) -> Join((tbl.Alias oldName newName), jn, None)
+        member this.Name =
+            match this with
+                | Join(tbl, jntp, Some(whr)) -> jntp.Name + tbl.Name + whr.Name
+                | Join(tbl, jntp, _) -> jntp.Name + tbl.Name
 
 type top = 
     | Top of (string)
@@ -177,6 +179,21 @@ type sqlStatement =
                     | Some(wh) -> Some(wh.Rename oldName newName);
                     | None -> None;
             OrderBy = this.OrderBy |> List.map (fun ob -> ob.Rename oldName newName); }
+        member this.Name =
+            "SELECT " 
+            + match this.TopN with
+                | Some(tp) -> tp.Name + " \n\t"
+                | _ -> "\n\t"
+            + mapReduce ", \n\t" this.Columns (fun vl -> vl.Name) + " \n"
+            + "FROM \n\t" 
+            + this.Table1.Name + "\n\t" 
+            + mapReduce "\n\t" this.Joins (fun jn -> jn.Name)
+            + match this.Where with 
+                | Some(whr) -> "\nWHERE \n\t" + whr.Name
+                | _ -> ""
+            + if this.OrderBy.Length > 0 then 
+                "\nORDER BY \n\t" + mapReduce ", \n\t" this.OrderBy (fun ob -> ob.Name) 
+              else ""
 
 //Here I'm building a merge function in order to merge 2 different queries
 //The type signature shows a bit how I intend to do it
