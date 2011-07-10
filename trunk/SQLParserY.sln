@@ -5,6 +5,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SQLParserY", "SQLParserY\SQ
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ConsoleTester", "ConsoleTester\ConsoleTester.fsproj", "{99F37D19-ED30-42C7-8182-BD49E2F7C2FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParserTester", "ParserTester\ParserTester.csproj", "{D6BBB879-562F-4273-878F-25CA3A6D834D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,16 @@ Global
 		{99F37D19-ED30-42C7-8182-BD49E2F7C2FB}.Release|Mixed Platforms.Build.0 = Release|x86
 		{99F37D19-ED30-42C7-8182-BD49E2F7C2FB}.Release|x86.ActiveCfg = Release|x86
 		{99F37D19-ED30-42C7-8182-BD49E2F7C2FB}.Release|x86.Build.0 = Release|x86
+		{D6BBB879-562F-4273-878F-25CA3A6D834D}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D6BBB879-562F-4273-878F-25CA3A6D834D}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{D6BBB879-562F-4273-878F-25CA3A6D834D}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{D6BBB879-562F-4273-878F-25CA3A6D834D}.Debug|x86.ActiveCfg = Debug|x86
+		{D6BBB879-562F-4273-878F-25CA3A6D834D}.Debug|x86.Build.0 = Debug|x86
+		{D6BBB879-562F-4273-878F-25CA3A6D834D}.Release|Any CPU.ActiveCfg = Release|x86
+		{D6BBB879-562F-4273-878F-25CA3A6D834D}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{D6BBB879-562F-4273-878F-25CA3A6D834D}.Release|Mixed Platforms.Build.0 = Release|x86
+		{D6BBB879-562F-4273-878F-25CA3A6D834D}.Release|x86.ActiveCfg = Release|x86
+		{D6BBB879-562F-4273-878F-25CA3A6D834D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
