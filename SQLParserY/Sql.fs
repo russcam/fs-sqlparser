@@ -113,7 +113,7 @@ type order = Order of (value * dir option)
                 | Order(vl, drOp) -> Order(vl.Alias tableName aliasName, drOp)
         member this.Name = 
             match this with
-                | Order(vl, Some(dr)) -> vl.Name + dr.Name
+                | Order(vl, Some(dr)) -> vl.Name + " " + dr.Name
                 | Order(vl, _) -> vl.Name
 
 type where =   
