@@ -1,4 +1,4 @@
-﻿module Sql
+ module Sql
 
 open System
 
@@ -148,7 +148,7 @@ type join = Join of (table * joinType * where option)   // table name, join, opt
                 | Join(tbl, jn, _) -> Join((tbl.Alias tableName aliasName), jn, None)
         member this.Name =
             match this with
-                | Join(tbl, jntp, Some(whr)) -> jntp.Name + tbl.Name + whr.Name
+                | Join(tbl, jntp, Some(whr)) -> jntp.Name + tbl.Name + " ON " + whr.Name
                 | Join(tbl, jntp, _) -> jntp.Name + tbl.Name
 
 type top = 
