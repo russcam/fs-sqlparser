@@ -1,4 +1,4 @@
- module Sql
+module Sql
 
 open System
 
@@ -89,7 +89,7 @@ type value =
                         match sch with
                             | Some(sch) -> sch.Name + "." + fName.Name + "(" + (mapReduce ", " vals (fun vl -> vl.Name)) + ")"
                             | None -> fName.Name + "(" + (mapReduce ", " vals (fun vl -> vl.Name)) + ")"
-                    | AliassedValue(vl, str) -> vl.Name + " AS " + str
+                    | AliassedValue(vl, str) -> vl.Name + " AS " + str                   
 
 type dir = Asc | Desc   
     with member this.Name = 
@@ -150,6 +150,9 @@ type join = Join of (table * joinType * where option)   // table name, join, opt
             match this with
                 | Join(tbl, jntp, Some(whr)) -> jntp.Name + tbl.Name + " ON " + whr.Name
                 | Join(tbl, jntp, _) -> jntp.Name + tbl.Name
+        member this.Table =
+            match this with
+                | Join(tbl, _, _) -> tbl
 
 type top = 
     | Top of (string)
@@ -194,7 +197,18 @@ type sqlStatement =
             + if this.OrderBy.Length > 0 then 
                 "\nORDER BY \n\t" + mapReduce ", \n\t" this.OrderBy (fun ob -> ob.Name) 
               else ""
-
+        member this.Tables =
+            List.append (List.map (fun (jn: join) -> jn.Table) this.Joins) [this.Table1]
+        member this.TableFields (tableName: string) =
+            this.Columns |> List.choose 
+                (fun (vl: value) -> match vl with
+                                    | AliassedValue(TableField(Table(_, tblName), Field(fldName)) , al) -> 
+                                        if tblName.ToLower() = tableName.ToLower() then Some(tblName, fldName, Some(al))
+                                        else None
+                                    | TableField(Table(_, tblName), Field(fldName)) -> 
+                                        if tblName.ToLower() = tableName.ToLower() then Some(tblName, fldName, None)
+                                        else None
+                                    | _ -> None) 
 //Here I'm building a merge function in order to merge 2 different queries
 //The type signature shows a bit how I intend to do it
 //

@@ -13,7 +13,7 @@ namespace ParserTester
         {
             var query =
             @"   
-                SELECT top 1 percent blaa.t1.x, fun(y) as funny, dbo.fun(y)
+                SELECT top 1 percent blaa.t1.x, t1.q as t1q, fun(y) as funny, dbo.fun(y)
                 FROM t1   
                 LEFT JOIN t2
                 INNER JOIN t3 as bla ON bla.ID = t2.ID  
@@ -21,10 +21,14 @@ namespace ParserTester
                 ORDER BY x ASC, y DESC, z   
             ";
 
+            // YOU SHOULD TRY RIGHTCLICK ON A F# FUNCTION AND THEN GO TO DEFINITION   -> WOW WTF
+
 
             Sql.sqlStatement stmnt = Module1.ParseSql(query);
             SqlObject so = new SqlObject() { Top = stmnt.TopN.Value.Name, TableName = stmnt.Table1.Name };
             
+            Console.WriteLine(stmnt.Tables.Select(tbl => tbl.Name).Aggregate((tbl1,tbl2) => tbl1 + "," + tbl2));
+            Console.WriteLine(stmnt.TableFields("t1").Select(fld => "Table:" + fld.Item1 + " Field:" + fld.Item2 + " FieldAlias:" + fld.Item3).Aggregate((fld1, fld2) => fld1 + "\n" + fld2));
             var columns = stmnt.Columns.ToList();
             foreach (var item in columns)
             {
