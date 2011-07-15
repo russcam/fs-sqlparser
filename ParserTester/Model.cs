@@ -32,17 +32,31 @@ namespace ParserTester
 
     public class SqlTable
     {
+        public SqlTable(SqlSchema schema, string alias, string tableName, List<SqlColumn> columns) {
+            this.Schema = schema;
+            this.Alias = alias;
+            this.TableName = tableName;
+            this.Columns = columns;
+        }
+
         public SqlSchema Schema { get; set; }
         public string Alias { get; set; }
         public string TableName { get; set; }
-        public List<SqlColumn> Columns { get; set; }
+        public IEnumerable<SqlColumn> Columns { get; set; }
     };
     public class SqlSchema
     {
+        public SqlSchema(string schemaName) {
+            this.SchemaName = schemaName;
+        }
         public string SchemaName { get; set; }
     };
     public class SqlColumn
     {
+        public SqlColumn(string alias, string columnName) {
+            this.Alias = alias;
+            this.ColumnName = columnName;
+        }
         public string Alias { get; set; }
         public string ColumnName { get; set; }
     };

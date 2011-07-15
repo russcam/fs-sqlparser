@@ -24,11 +24,11 @@ namespace ParserTester
             // YOU SHOULD TRY RIGHTCLICK ON A F# FUNCTION AND THEN GO TO DEFINITION   -> WOW WTF
 
 
-            Sql.sqlStatement stmnt = Module1.ParseSql(query);
+            Sql.sqlStatement stmnt = Parser.ParseSql(query);
             SqlObject so = new SqlObject() { Top = stmnt.TopN.Value.Name, TableName = stmnt.Table1.Name };
             
             Console.WriteLine(stmnt.Tables.Select(tbl => tbl.Name).Aggregate((tbl1,tbl2) => tbl1 + "," + tbl2));
-            Console.WriteLine(stmnt.TableFields("t1").Select(fld => "Table:" + fld.Item1 + " Field:" + fld.Item2 + " FieldAlias:" + fld.Item3).Aggregate((fld1, fld2) => fld1 + "\n" + fld2));
+            Console.WriteLine(stmnt.getTableFields("t1").Select(fld => "Field:" + fld.Item1 + " FieldAlias:" + fld.Item2).Aggregate((fld1, fld2) => fld1 + "\n" + fld2));
             var columns = stmnt.Columns.ToList();
             foreach (var item in columns)
             {
