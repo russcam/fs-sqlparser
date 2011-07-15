@@ -14,7 +14,7 @@ let x = "
 //        FROM q.x as v
 //    " 
 
-Module1.parseit x
+Parser.parseit x
 
 Console.ReadKey(true) |> ignore
 
