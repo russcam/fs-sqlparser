@@ -44,7 +44,6 @@ topn:
 	| TOP INT PERCENT						{ Some(TopPercent($2)) } 
 
 
-
 // join clause   
 joinList:   
     |										{ [] }   
@@ -55,6 +54,8 @@ joinClause:
     | INNER JOIN aliasableTable joinOnClause			{ Join($3, Inner, $4) }   
     | LEFT JOIN aliasableTable joinOnClause				{ Join($3, Left, $4) }   
     | RIGHT JOIN aliasableTable joinOnClause			{ Join($3, Right, $4) }   
+ 
+
  
 aliasableTable:
 	| table									{ $1 }

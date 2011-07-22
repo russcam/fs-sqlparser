@@ -12,7 +12,6 @@ let parseit x =
     try
         let y = SqlParser.start SqlLexer.tokenize lexbuf 
         printfn "%A" y  
-        printfn "%A" y.Name  
     with
        | ex -> printfn "%A" ex
 
