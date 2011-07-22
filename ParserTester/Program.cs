@@ -25,9 +25,9 @@ namespace ParserTester
 
 
             Sql.sqlStatement stmnt = Parser.ParseSql(query);
-            SqlObject so = new SqlObject() { Top = stmnt.TopN.Value.Name, TableName = stmnt.Table1.Name };
+            SqlObject so = new SqlObject() { Top = stmnt.TopN.Value.Name, TableName = stmnt.Table1.Identifier };
             
-            Console.WriteLine(stmnt.Tables.Select(tbl => tbl.Name).Aggregate((tbl1,tbl2) => tbl1 + "," + tbl2));
+            //Console.WriteLine(stmnt.Tables.Select(tbl => tbl.Name).Aggregate((tbl1,tbl2) => tbl1 + "," + tbl2));
             Console.WriteLine(stmnt.getTableFields("t1").Select(fld => "Field:" + fld.Item1 + " FieldAlias:" + fld.Item2).Aggregate((fld1, fld2) => fld1 + "\n" + fld2));
             var columns = stmnt.Columns.ToList();
             foreach (var item in columns)

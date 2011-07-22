@@ -2,8 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.FSharp.Core;
 
 namespace ParserTester {
+
+    static class FSharpOptionExt {
+        //Makes an F# option behave like a nullable value where None == Null
+        public static string getVal(this FSharpOption<string> fOp) {
+            if(fOp == FSharpOption<string>.None) {
+                return null;
+            } else {
+                return fOp.Value;
+            }
+        }
+    }
+
+    /*I wanted to do this :(
+    static class FSharpOptionExt<T> {
+        //Makes an F# option behave like a nullable value where None == Null
+        public static T getVal(this FSharpOption<T> fOp) {
+            if(fOp == FSharpOption<T>.None) {
+                return default(T);
+            } else {
+                return fOp.Value;
+            }
+        }
+    }
+    */
+
     class ModelBuilder {
         //I introduced this class so that only this class has dependencies on the F# project
         private Dictionary<string, SqlSchema> schemas = new Dictionary<string,SqlSchema>();
@@ -18,36 +44,27 @@ namespace ParserTester {
                 throw new Exception("Parse Error");
             }
             SqlQuery qry = new SqlQuery();
-            qry.Tables.AddRange(stmnt.Tables.Select(tbl => buildTable(tbl, stmnt)));
+            qry.Tables.Add(new SqlTable() {
+                    Schema = getSchema(stmnt.Table1.SchemaName),
+                    AliasName = stmnt.Table1.AliasName.getVal(),
+                    TableName = stmnt.Table1.TableName,
+                    Columns = stmnt
+                                .getTableFields(stmnt.Table1.Identifier)
+                                .Select(fld => new SqlColumn() { Alias = fld.Item2, ColumnName = fld.Item1 })
+                                .ToList(),
+                    //JoinItems = stmnt.Joins.Where(jn => jn.
+                }
+            );
+
             
+
+            qry.JoinItems.AddRange(null);
             //TODO Add rest
             return qry;
         }
 
-        private SqlTable buildTable(Sql.table tbl, Sql.sqlStatement stmnt) {
-            string tblOrAliasName;
-
-            if (!String.IsNullOrEmpty(tbl.AliasName)) {
-                tblOrAliasName = tbl.AliasName;
-            } else {
-                tblOrAliasName = tbl.Name;
-            }
-
-            return new SqlTable(
-                getSchema(tbl.SchemaName), 
-                tbl.AliasName, 
-                tbl.Name, 
-                stmnt
-                    .getTableFields(tblOrAliasName)
-                    .Select(fld => new SqlColumn(fld.Item2, fld.Item1))
-                    .ToList()
-            );
-        }
-
-        private SqlColumn buildColumn(Tuple<string, string> tup) {
-            return new SqlColumn(tup.Item2, tup.Item1);
-        }
-
+            
+        
         private SqlSchema getSchema(string schemaName) {
             if (String.IsNullOrEmpty(schemaName)){
                 return null;   
@@ -55,10 +72,11 @@ namespace ParserTester {
             if(schemas.ContainsKey(schemaName)) {
                 return schemas[schemaName];
             } else {
-                SqlSchema nw = new SqlSchema(schemaName);
+                SqlSchema nw = new SqlSchema() { SchemaName = schemaName };
                 schemas.Add(schemaName, nw);
                 return nw;
             }
         }
+
     }
 }
