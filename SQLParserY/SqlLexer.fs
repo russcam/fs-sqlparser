@@ -1,4 +1,4 @@
-# 1 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
+# 1 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
  
 module SqlLexer
 open System
@@ -37,7 +37,7 @@ let ops =
         ">=",   GE;   
     ] |> Map.ofList   
 
-# 40 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
+# 40 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
 let trans : uint16[] array = 
     [| 
     (* State 0 *)
@@ -90,64 +90,64 @@ and tokenize  (lexbuf : Microsoft.FSharp.Text.Lexing.LexBuffer<_>) = _fslex_toke
 and _fslex_tokenize  _fslex_state lexbuf =
   match _fslex_tables.Interpret(_fslex_state,lexbuf) with
   | 0 -> ( 
-# 54 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
+# 54 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
                                  tokenize lexbuf 
-# 95 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
+# 95 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
           )
   | 1 -> ( 
-# 55 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
+# 55 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
                                  lexbuf.EndPos <- lexbuf.EndPos.NextLine; tokenize lexbuf; 
-# 100 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
+# 100 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
           )
   | 2 -> ( 
-# 56 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
+# 56 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
                                  ops.[LexBuffer<_>.LexemeString lexbuf] 
-# 105 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
+# 105 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
           )
   | 3 -> ( 
-# 57 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
+# 57 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
                                  INT(LexBuffer<_>.LexemeString lexbuf) 
-# 110 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
+# 110 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
           )
   | 4 -> ( 
-# 58 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
+# 58 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
                                  FLOAT(LexBuffer<_>.LexemeString lexbuf) 
-# 115 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
+# 115 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
           )
   | 5 -> ( 
-# 59 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
+# 59 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
                                  match keywords.TryFind((LexBuffer<_>.LexemeString lexbuf).ToUpper()) with   
                                  | Some(token) -> token   
                                  | None -> ID(LexBuffer<_>.LexemeString lexbuf) 
-# 122 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
+# 122 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
           )
   | 6 -> ( 
-# 62 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
+# 62 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
                          DOT 
-# 127 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
+# 127 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
           )
   | 7 -> ( 
-# 63 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
+# 63 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
                            COMMA 
-# 132 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
+# 132 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
           )
   | 8 -> ( 
-# 64 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
+# 64 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
                            LPAREN 
-# 137 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
+# 137 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
           )
   | 9 -> ( 
-# 65 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
+# 65 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
                            RPAREN 
-# 142 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
+# 142 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
           )
   | 10 -> ( 
-# 66 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
+# 66 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
                                  EOF 
-# 147 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
+# 147 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
           )
   | _ -> failwith "tokenize"
 
-# 69 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
+# 69 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fsl"
 
-# 3000000 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
+# 3000000 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlLexer.fs"
