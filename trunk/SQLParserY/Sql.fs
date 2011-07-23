@@ -138,6 +138,9 @@ type join = Join of (table * joinType * where option)   // table name, join, opt
         member this.Where =
             match this with
                 | Join(_, _, whr) -> whr
+        member this.JoinTable =
+            match this with
+                | Join(tbl, _, _) -> tbl
 
 type top = 
     | Top of (string)

@@ -15,6 +15,16 @@ namespace ParserTester {
                 return fOp.Value;
             }
         }
+
+        public static SqlWhere getVal(this FSharpOption<Sql.where> whOp) {
+            if(whOp == FSharpOption<Sql.where>.None) {
+                return null;
+            } else {
+                return new SqlWhere() {
+                    //
+                };
+            }
+        }
     }
 
     /*I wanted to do this :(
@@ -44,21 +54,49 @@ namespace ParserTester {
                 throw new Exception("Parse Error");
             }
             SqlQuery qry = new SqlQuery();
-            qry.Tables.Add(new SqlTable() {
+
+
+            List<SqlTable> tbls = new List<SqlTable>();
+            tbls.Add(new SqlTable() {
                     Schema = getSchema(stmnt.Table1.SchemaName),
                     AliasName = stmnt.Table1.AliasName.getVal(),
                     TableName = stmnt.Table1.TableName,
                     Columns = stmnt
                                 .getTableFields(stmnt.Table1.Identifier)
                                 .Select(fld => new SqlColumn() { Alias = fld.Item2, ColumnName = fld.Item1 })
-                                .ToList(),
-                    //JoinItems = stmnt.Joins.Where(jn => jn.
+                                .ToList()
                 }
             );
 
-            
+            tbls.AddRange(
+                    stmnt
+                    .Joins
+                    .Select(jn => new SqlTable() {
+                            AliasName = jn.JoinTable.AliasName.getVal(),
+                            Schema = getSchema(jn.JoinTable.SchemaName),
+                            TableName = jn.JoinTable.TableName
+                    }
+                )
+            );
 
-            qry.JoinItems.AddRange(null);
+            qry.Tables = tbls.ToDictionary(tbl => tbl.Identifier);
+
+            qry.JoinItems.AddRange(
+                stmnt
+                .Joins
+                .Select(
+                    jn => new SqlJoin() {
+                        Criteria = null,
+                        RhsTable = qry.Tables[jn.JoinTable.Identifier],
+                        SqlJoinType = jn.JoinType,
+                        //Criteria = new SqlWhere() {
+                        //    LeftOperand = jn.Where.
+
+                        //}
+                        //jn.Where
+                    }
+                )
+            );
             //TODO Add rest
             return qry;
         }
