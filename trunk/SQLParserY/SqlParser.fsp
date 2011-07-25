@@ -66,9 +66,9 @@ joinOnClause:
     | ON conditionList						{ Some($2) }   
  
 conditionList:   
-    | value op value						{ Cond($1, $2, $3) }   
-    | value op value AND conditionList		{ And(Cond($1, $2, $3), $5) }   
-    | value op value OR conditionList		{ Or(Cond($1, $2, $3), $5) }   
+    | value op value						{ WhereCond(Comp(CondValue($1), $2, CondValue($3))) }   
+    | value op value AND conditionList		{ WhereCond(And(WhereCond(Comp(CondValue($1), $2, CondValue($3))),$5)) }   
+    | value op value OR conditionList		{ WhereCond(Or(WhereCond(Comp(CondValue($1), $2, CondValue($3))),$5)) }   
  
 // where clause   
 whereClause:   

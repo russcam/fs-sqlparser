@@ -62,8 +62,11 @@ type table =
                     | Table(Some(Schema(schemaName)), _) -> schemaName
                     | Table(None,_) -> ""
                     | AliassedTable(tbl,_) -> tbl.SchemaName
-                    
-    
+    member this.Schema =
+            match this with
+                    | Table(sch,_) -> sch
+                    | AliassedTable(tbl,_) -> tbl.Schema           
+
 type value =   
     | Int of string  
     | Float of string  
@@ -79,27 +82,41 @@ type value =
                     | Float(fld) -> fld
                     | String(fld) -> fld
                     | Field(fld) -> fld
-                    | TableField(tbl, fld) -> tbl.TableName + "." + fld.Name
-                    | Function(sch, fName, vals) -> 
-                        match sch with
-                            | Some(sch) -> sch.Name + "." + fName.Name + "(" + (mapReduce ", " vals (fun vl -> vl.Name)) + ")"
-                            | None -> fName.Name + "(" + (mapReduce ", " vals (fun vl -> vl.Name)) + ")"
-                    | AliassedValue(vl, str) -> vl.Name + " AS " + str                   
-
+                    | TableField(tbl, fld) -> fld.Name
+                    | Function(_, fName, _) -> fName.Name
+                    | AliassedValue(vl, al) -> al
+        member this.Value =
+            match this with
+                | AliassedValue(vl, _) -> Some(vl)
+                | TableField(_, fld) -> Some(fld)
+                | _ -> None
+        member this.Params =
+            match this with
+                | Function(_, _, vls) -> Some(vls)
+                | _ -> None                   
+        member this.Schema =
+            match this with
+                | TableField(tbl, _) -> tbl.Schema
+                | Function(sch, _, _) -> sch
+                | _ -> None
+        member this.Table = 
+            match this with
+                | TableField(tbl, _) -> Some(tbl)
+                | _ -> None
 type dir = Asc | Desc   
     with member this.Name = 
             match this with 
-                | Asc -> "ASC "
-                | Desc -> "DESC "
+                | Asc -> "ASC"
+                | Desc -> "DESC"
 
-type op = Eq | Gt | Ge | Lt | Le   
+type op = Eq | Gt | Ge | Lt | Le  
     with member this.Name = 
             match this with 
-                | Eq -> "= "
-                | Gt -> "> "
-                | Ge -> ">= "
-                | Lt -> "< "
-                | Le -> "<= "
+                | Eq -> "="
+                | Gt -> ">"
+                | Ge -> ">="
+                | Lt -> "<"
+                | Le -> "<="
 
 type order = Order of (value * dir option)
     with 
@@ -108,16 +125,42 @@ type order = Order of (value * dir option)
                 | Order(vl, Some(dr)) -> vl.Name + " " + dr.Name
                 | Order(vl, _) -> vl.Name
 
-type where =   
-    | Cond of (value * op * value)   
-    | And of (where * where)
-    | Or of (where * where)   
+type cond = 
+    | WhereCond of (where)
+    | CondValue of (value)
     with 
-        member this.Name =
+    member this.isValue =
+        match this with 
+            | CondValue(_) -> true
+            | WhereCond(_) -> false
+    member this.Value = 
+        match this with 
+            | CondValue(vl) -> Some(vl)
+            | WhereCond(_) -> None
+    member this.Condition =
+        match this with 
+            | CondValue(_) -> None
+            | WhereCond(cnd) -> Some(cnd)
+and where =   
+    | Comp of (cond * op * cond)   
+    | And of (cond * cond)
+    | Or of (cond * cond)   
+    with 
+        member this.Operator =
             match this with
-                | Cond(val1, op1, val2) -> val1.Name + " " + op1.Name + val2.Name
-                | And(val1, val2) -> val1.Name + " AND \n\t" + val2.Name
-                | Or(val1, val2) ->  val1.Name + " OR \n\t" + val2.Name
+                | Comp(_, op1, _) -> op1.Name
+                | And(_, _) -> "AND"
+                | Or(_, _) ->  "OR"
+        member this.Left =
+            match this with
+                | Comp(lhs, _, _) -> lhs
+                | And(lhs, _) -> lhs
+                | Or(lhs, _) -> lhs
+        member this.Right =
+            match this with
+                | Comp(_, _, rhs) -> rhs
+                | And(_, rhs) -> rhs
+                | Or(_, rhs) -> rhs
 
 type joinType = Inner | Left | Right | Outer
     with member this.Name = 
@@ -127,7 +170,7 @@ type joinType = Inner | Left | Right | Outer
                 | Right -> "RIGHT JOIN"
                 | Outer -> "OUTER JOIN"
 
-type join = Join of (table * joinType * where option)   // table name, join, optional "on" clause   
+type join = Join of (table * joinType * cond option)   // table name, join, optional "on" clause   
     with 
         member this.JoinType =
             match this with
@@ -157,18 +200,18 @@ type sqlStatement =
         Table1 : table;   
         Columns : value list;   
         Joins : join list;   
-        Where : where option;   
+        Where : cond option;   
         OrderBy : order list }
     with
         member this.Identifiers =
             List.append (List.map (fun (jn: join) -> jn.RhsIdentifier) this.Joins) [this.Table1.Identifier]
-        member this.getTableFields (tableName: string) =
-            this.Columns |> List.choose 
-                (fun (vl: value) -> match vl with
-                                    | AliassedValue(TableField(Table(_, tblName), Field(fldName)) , al) -> 
-                                        if tblName.ToLower() = tableName.ToLower() then Some(fldName, al)
-                                        else None
-                                    | TableField(Table(_, tblName), Field(fldName)) -> 
-                                        if tblName.ToLower() = tableName.ToLower() then Some(fldName, "")
-                                        else None
-                                    | _ -> None) 
+//        member this.getTableFields (tableName: string) =
+//            this.Columns |> List.choose 
+//                (fun (vl: value) -> match vl with
+//                                    | AliassedValue(TableField(Table(_, tblName), Field(fldName)) , al) -> 
+//                                        if tblName.ToLower() = tableName.ToLower() then Some(fldName, al)
+//                                        else None
+//                                    | TableField(Table(_, tblName), Field(fldName)) -> 
+//                                        if tblName.ToLower() = tableName.ToLower() then Some(fldName, "")
+//                                        else None
+//                                    | _ -> None) 

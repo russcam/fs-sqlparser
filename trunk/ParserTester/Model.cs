@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ParserTester;
 
 namespace ParserTester
 {
@@ -15,7 +16,7 @@ namespace ParserTester
         public List<SqlWhere> WhereItems { get; set; }
         public List<SqlOrderBy> OrderByColumns { get; set; }
         public List<SqlJoin> JoinItems { get; set; }
-
+        public List<SqlValue> Columns { get; set; }
         #endregion
 
         #region ctor
@@ -25,10 +26,11 @@ namespace ParserTester
             this.Tables = new Dictionary<string, SqlTable>();
             this.WhereItems = new List<SqlWhere>();
             this.OrderByColumns = new List<SqlOrderBy>();
+            this.Columns = new List<SqlValue>();
         }
 
         #endregion
-    };
+    }
 
 
     public class SqlTable
@@ -46,38 +48,66 @@ namespace ParserTester
                 }
             }
         }
-        public IEnumerable<SqlColumn> Columns { get; set; }
-        public IEnumerable<SqlJoin> JoinItems { get; set; }
-    };
+    }
+
     public class SqlSchema
     {
         public string SchemaName { get; set; }
-    };
-    public class SqlColumn
-    {
-        public string Alias { get; set; }
-        public string ColumnName { get; set; }
-    };
-    public class SqlWhere
-    {
-        public string LeftOperand { get; set; }
-        public string Operator { get; set; }
-        public string RightOperand { get; set; }
     }
+
+    public class SqlWhere : SqlValue
+    {
+        public SqlValue LeftOperand { get; set; }
+        public string Operator { get; set; }
+        public SqlValue RightOperand { get; set; }
+
+        //public SqlTable getLeftTable(SqlTable rightTable) {
+        //    SqlField fld = this.LeftOperand as SqlField;
+        //    if(fld != null) {
+        //        if(fld.Table != null) {
+        //            if(!fld.Table.Equals(rightTable)) {
+        //                return fld.Table;
+        //            }
+        //        }
+        //    }
+
+        //    fld = this.RightOperand as SqlField;
+        //    if(fld != null) {
+        //        if(fld.Table != null) {
+        //            if(!fld.Table.Equals(rightTable)) {
+        //                return fld.Table;
+        //            }
+        //        }
+        //    }
+        //    return null;
+        //}
+    }
+
     public class SqlOrderBy
     {
-        public SqlColumn Column { get; set; }
+        public SqlValue Column { get; set; }
         public string Dir { get; set; }
-    };
+    }
+
     public class SqlJoin
     {
         public SqlTable LhsTable { get; set; }
         public string SqlJoinType { get; set; }
         public SqlTable RhsTable { get; set; }
-        public SqlWhere Criteria { get; set; }
-    };
+        private SqlWhere criteria;
+        public SqlWhere Criteria { 
+            set {
+                this.criteria = value;
+                //TODO but how?
+                //LhsTable = value.getLeftTable(RhsTable);
+            }
+            get {
+                return this.criteria;
+            }
+        }
+    }
 
-    abstract class SqlValue {
+    public abstract class SqlValue {
         public string Alias { get; set; }
         protected string value;
         public override string ToString() {
@@ -86,6 +116,14 @@ namespace ParserTester
             } else {
                 return value;
             }
+        }
+        public bool IsSelected { get; set; } 
+    }
+
+    public class SqlString : SqlValue {
+        public string Str {
+            get { return base.value; }
+            set { base.value = value; }
         }
     }
 
@@ -108,6 +146,7 @@ namespace ParserTester
             get { return base.value; }
             set { base.value = value; }
         }
+        public SqlTable Table { get; set; }
     }
 
     public class SqlFunction : SqlValue {
@@ -115,13 +154,13 @@ namespace ParserTester
             get { return base.value; }
             set { base.value = value; }
         }
-        public string SchemaName { get; set; }
+        public SqlSchema Schema { get; set; }
         public List<SqlValue> Parameters { get; set; }
         public override string ToString() {
             string strParams = Parameters.Aggregate("", (sqlVal, acc) => sqlVal.ToString() + ", ");
             string sch = "";
-            if(!String.IsNullOrEmpty(SchemaName)) {
-                sch = SchemaName + ".";
+            if(Schema != null) {
+                sch = Schema.SchemaName + ".";
             }
             if(strParams.Length > 2) {
                 return sch + this.FunctionName + "(" + strParams.Substring(0, strParams.Length - 2) + ")";
