@@ -3,12 +3,12 @@ module SqlParser
 #nowarn "64";; // turn off warnings that type variables used in production annotations are instantiated to concrete type
 open Microsoft.FSharp.Text.Lexing
 open Microsoft.FSharp.Text.Parsing.ParseHelpers
-# 1 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 1 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
    
 //module SqlParser
 open Sql   
 
-# 11 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 11 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
 // This type is the type of tokens accepted by the parser
 type token = 
   | EOF
@@ -302,7 +302,7 @@ let _fsyacc_reductionSymbolCounts = [|1us; 9us; 0us; 2us; 3us; 0us; 1us; 2us; 4u
 let _fsyacc_productionToNonTerminalTable = [|0us; 1us; 2us; 2us; 2us; 3us; 3us; 3us; 4us; 4us; 4us; 5us; 5us; 6us; 6us; 7us; 7us; 7us; 8us; 8us; 9us; 9us; 9us; 9us; 9us; 10us; 10us; 11us; 11us; 11us; 11us; 11us; 11us; 11us; 11us; 12us; 12us; 12us; 13us; 13us; 14us; 14us; 15us; 15us; 15us; |]
 let _fsyacc_immediateActions = [|65535us; 49152us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 65535us; 16385us; 65535us; 65535us; 16388us; 65535us; 16391us; 65535us; 65535us; 65535us; 16392us; 65535us; 65535us; 65535us; 16393us; 65535us; 65535us; 65535us; 16394us; 65535us; 65535us; 16396us; 65535us; 16398us; 65535us; 65535us; 65535us; 65535us; 16400us; 65535us; 16401us; 65535us; 16403us; 16404us; 16405us; 16406us; 16407us; 16408us; 65535us; 65535us; 16410us; 65535us; 65535us; 65535us; 16411us; 16412us; 16413us; 65535us; 65535us; 65535us; 16414us; 65535us; 65535us; 65535us; 65535us; 16415us; 65535us; 16416us; 65535us; 16421us; 65535us; 65535us; 16423us; 65535us; 65535us; 16425us; 16427us; 16428us; |]
 let _fsyacc_reductions ()  =    [| 
-# 305 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 305 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : Sql.sqlStatement)) in
             Microsoft.FSharp.Core.Operators.box
@@ -311,7 +311,7 @@ let _fsyacc_reductions ()  =    [|
                       raise (Microsoft.FSharp.Text.Parsing.Accept(Microsoft.FSharp.Core.Operators.box _1))
                    )
                  : '_startstart));
-# 314 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 314 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : 'topn)) in
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'valueList)) in
@@ -322,7 +322,7 @@ let _fsyacc_reductions ()  =    [|
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 32 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 32 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                                      
                                                      { TopN = _2; 
                                                        Table1 = _5; 
@@ -332,154 +332,154 @@ let _fsyacc_reductions ()  =    [|
                                                        OrderBy = _8 }   
                                                  
                    )
-# 32 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 32 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : Sql.sqlStatement));
-# 337 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 337 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 42 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 42 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                    None 
                    )
-# 42 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 42 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'topn));
-# 347 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 347 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 43 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 43 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                          Some(Top(_2)) 
                    )
-# 43 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 43 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'topn));
-# 358 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 358 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 44 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 44 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                                Some(TopPercent(_2)) 
                    )
-# 44 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 44 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'topn));
-# 369 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 369 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 49 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 49 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                       [] 
                    )
-# 49 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 49 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'joinList));
-# 379 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 379 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'joinClause)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 50 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 50 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                               [_1] 
                    )
-# 50 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 50 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'joinList));
-# 390 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 390 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'joinClause)) in
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : 'joinList)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 51 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 51 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                                      _1 :: _2 
                    )
-# 51 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 51 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'joinList));
-# 402 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 402 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'aliasableTable)) in
             let _4 = (let data = parseState.GetInput(4) in (Microsoft.FSharp.Core.Operators.unbox data : 'joinOnClause)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 54 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 54 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                                                       Join(_3, Inner, _4) 
                    )
-# 54 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 54 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'joinClause));
-# 414 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 414 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'aliasableTable)) in
             let _4 = (let data = parseState.GetInput(4) in (Microsoft.FSharp.Core.Operators.unbox data : 'joinOnClause)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 55 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 55 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                                                       Join(_3, Left, _4) 
                    )
-# 55 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 55 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'joinClause));
-# 426 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 426 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'aliasableTable)) in
             let _4 = (let data = parseState.GetInput(4) in (Microsoft.FSharp.Core.Operators.unbox data : 'joinOnClause)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 56 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 56 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                                                       Join(_3, Right, _4) 
                    )
-# 56 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 56 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'joinClause));
-# 438 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 438 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'table)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 61 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 61 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                         _1 
                    )
-# 61 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 61 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'aliasableTable));
-# 449 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 449 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'table)) in
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 62 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 62 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                             AliassedTable(_1, Alias(_3)) 
                    )
-# 62 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 62 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'aliasableTable));
-# 461 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 461 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 65 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 65 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                       None 
                    )
-# 65 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 65 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'joinOnClause));
-# 471 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 471 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : 'conditionList)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 66 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 66 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                                    Some(_2) 
                    )
-# 66 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 66 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'joinOnClause));
-# 482 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 482 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'value)) in
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : 'op)) in
@@ -487,26 +487,12 @@ let _fsyacc_reductions ()  =    [|
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 69 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
-                                                 Cond(_1, _2, _3) 
+# 69 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+                                                 WhereCond(Comp(CondValue(_1), _2, CondValue(_3))) 
                    )
-# 69 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 69 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'conditionList));
-# 495 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
-        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
-            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'value)) in
-            let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : 'op)) in
-            let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'value)) in
-            let _5 = (let data = parseState.GetInput(5) in (Microsoft.FSharp.Core.Operators.unbox data : 'conditionList)) in
-            Microsoft.FSharp.Core.Operators.box
-                (
-                   (
-# 70 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
-                                                               And(Cond(_1, _2, _3), _5) 
-                   )
-# 70 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
-                 : 'conditionList));
-# 509 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 495 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'value)) in
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : 'op)) in
@@ -515,152 +501,166 @@ let _fsyacc_reductions ()  =    [|
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 71 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
-                                                              Or(Cond(_1, _2, _3), _5) 
+# 70 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+                                                               WhereCond(And(WhereCond(Comp(CondValue(_1), _2, CondValue(_3))),_5)) 
                    )
-# 71 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 70 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'conditionList));
-# 523 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 509 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+        (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
+            let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'value)) in
+            let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : 'op)) in
+            let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'value)) in
+            let _5 = (let data = parseState.GetInput(5) in (Microsoft.FSharp.Core.Operators.unbox data : 'conditionList)) in
+            Microsoft.FSharp.Core.Operators.box
+                (
+                   (
+# 71 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+                                                              WhereCond(Or(WhereCond(Comp(CondValue(_1), _2, CondValue(_3))),_5)) 
+                   )
+# 71 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+                 : 'conditionList));
+# 523 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 75 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 75 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                       None 
                    )
-# 75 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 75 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'whereClause));
-# 533 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 533 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _2 = (let data = parseState.GetInput(2) in (Microsoft.FSharp.Core.Operators.unbox data : 'conditionList)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 76 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 76 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                                      Some(_2) 
                    )
-# 76 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 76 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'whereClause));
-# 544 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 544 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 78 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 78 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                               Eq 
                    )
-# 78 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 78 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'op));
-# 554 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 554 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 78 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 78 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                           Lt 
                    )
-# 78 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 78 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'op));
-# 564 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 564 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 78 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 78 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                                       Le 
                    )
-# 78 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 78 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'op));
-# 574 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 574 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 78 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 78 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                                                   Gt 
                    )
-# 78 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 78 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'op));
-# 584 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 584 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 78 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 78 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                                                               Ge 
                    )
-# 78 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 78 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'op));
-# 594 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 594 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 81 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 81 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                      Table(None, _1) 
                    )
-# 81 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 81 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'table));
-# 605 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 605 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 82 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 82 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                            Table(Some(Schema(_1)), _3) 
                    )
-# 82 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 82 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'table));
-# 617 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 617 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'value)) in
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 85 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 85 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                             AliassedValue(_1, _3) 
                    )
-# 85 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 85 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'value));
-# 629 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 629 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 86 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 86 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                          Int(_1) 
                    )
-# 86 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 86 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'value));
-# 640 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 640 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 87 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 87 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                            Float(_1) 
                    )
-# 87 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 87 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'value));
-# 651 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 651 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'valueList)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 88 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 88 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                                        Function(None, FunctionName(_1), _3)
                    )
-# 88 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 88 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'value));
-# 663 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 663 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
@@ -668,12 +668,12 @@ let _fsyacc_reductions ()  =    [|
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 89 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 89 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                                              Function(Some(Schema(_1)), FunctionName(_3), _5)
                    )
-# 89 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 89 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'value));
-# 676 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 676 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
@@ -681,146 +681,146 @@ let _fsyacc_reductions ()  =    [|
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 91 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 91 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                                    TableField(Table(Some(Schema(_1)), _3),Field(_5)) 
                    )
-# 91 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 91 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'value));
-# 689 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 689 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 92 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 92 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                            TableField(Table(None, _1),Field(_3)) 
                    )
-# 92 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 92 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'value));
-# 701 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 701 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : string)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 93 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 93 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                      Field(_1) 
                    )
-# 93 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 93 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'value));
-# 712 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 712 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 96 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 96 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                    [] 
                    )
-# 96 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 96 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'valueList));
-# 722 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 722 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'value)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 97 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 97 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                            [_1] 
                    )
-# 97 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 97 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'valueList));
-# 733 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 733 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'value)) in
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'valueList)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 98 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 98 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                                        _1 :: _3 
                    )
-# 98 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 98 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'valueList));
-# 745 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 745 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 102 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 102 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                             [] 
                    )
-# 102 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 102 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'orderByClause));
-# 755 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 755 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'orderByList)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 103 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 103 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                                             _3 
                    )
-# 103 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 103 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'orderByClause));
-# 766 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 766 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'orderBy)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 106 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 106 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                             [_1] 
                    )
-# 106 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 106 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'orderByList));
-# 777 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 777 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'orderBy)) in
             let _3 = (let data = parseState.GetInput(3) in (Microsoft.FSharp.Core.Operators.unbox data : 'orderByList)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 107 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 107 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                                           _1 :: _3 
                    )
-# 107 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 107 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'orderByList));
-# 789 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 789 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'value)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 110 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 110 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                            Order(_1, None) 
                    )
-# 110 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 110 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'orderBy));
-# 800 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 800 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'value)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 111 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 111 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                               Order(_1, Some(Asc)) 
                    )
-# 111 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 111 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'orderBy));
-# 811 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 811 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
         (fun (parseState : Microsoft.FSharp.Text.Parsing.IParseState) ->
             let _1 = (let data = parseState.GetInput(1) in (Microsoft.FSharp.Core.Operators.unbox data : 'value)) in
             Microsoft.FSharp.Core.Operators.box
                 (
                    (
-# 112 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 112 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                                               Order(_1, Some(Desc)) 
                    )
-# 112 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
+# 112 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fsp"
                  : 'orderBy));
 |]
-# 823 "C:\Documents and Settings\S.G.J.E.Janssen\My Documents\Visual Studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
+# 823 "C:\Documents and Settings\S.G.J.E.Janssen\my documents\visual studio 2010\Projects\SQLParserY\SQLParserY\SqlParser.fs"
 let tables () : Microsoft.FSharp.Text.Parsing.Tables<_> = 
   { reductions= _fsyacc_reductions ();
     endOfInputTag = _fsyacc_endOfInputTag;
