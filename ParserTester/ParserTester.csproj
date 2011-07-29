@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ext.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="ModelBuilder.cs" />
     <Compile Include="Program.cs" />
