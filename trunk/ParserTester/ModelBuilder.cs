@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.FSharp.Core;
+using System.Diagnostics;
 
 namespace ParserTester {
 
@@ -13,6 +14,14 @@ namespace ParserTester {
                 return null;
             } else {
                 return fOp.Value;
+            }
+        }
+
+        public static string getVal(this FSharpOption<Sql.dir> fOp) {
+            if(FSharpOption<Sql.dir>.get_IsNone(fOp)) {
+                return "";
+            } else {
+                return fOp.Value.Name;
             }
         }
     }
@@ -33,9 +42,9 @@ namespace ParserTester {
 
     class ModelBuilder {
         //I introduced this class so that only this class has dependencies on the F# project
-        private Dictionary<string, SqlSchema> schemas = new Dictionary<string,SqlSchema>();
         private SqlQuery qry;
-        
+        private Dictionary<string, SqlValue> builtValues = new Dictionary<string, SqlValue>();
+
         public SqlQuery build(string SQLString) {
             Sql.sqlStatement stmnt;
             try {
@@ -81,8 +90,32 @@ namespace ParserTester {
                 )
             );
 
-            //stmnt.Columns
-            //TODO Add rest
+            stmnt.Columns.ForEach(col => getOrBuildValue(col, true));
+
+            if (FSharpOption<Sql.cond>.get_IsSome(stmnt.Where)){
+                qry.Where = buildWhere(stmnt.Where.Value);
+            }
+
+            if (FSharpOption<Sql.top>.get_IsSome(stmnt.TopN)){
+                Sql.top tp = stmnt.TopN.Value;
+                String tpType;
+                if(tp.IsTopPercent) {
+                    tpType = "PERCENT";
+                }else { 
+                    tpType = ""; 
+                }
+
+                qry.Top = new SqlTop() {
+                    N = tp.N,
+                    type = tpType
+                };
+            }
+
+            qry.OrderByColumns.AddRange(stmnt.OrderBy.Select(ob => new SqlOrderBy() {
+                    Column = getOrBuildValue(ob.Column, false),
+                    Dir = ob.Direction.getVal()
+                }
+            ));
             return qry;
         }
 
@@ -95,6 +128,8 @@ namespace ParserTester {
         }
 
         private SqlWhere buildWhere(Sql.cond cond) {
+            if(cond == null)
+                return null;
             if(cond.isValue) {
                 throw new Exception("Didn't expect value");
             }
@@ -103,13 +138,13 @@ namespace ParserTester {
             SqlValue lft;
             SqlValue rgt;
             if(whr.Left.isValue) {
-                lft = buildValue(whr.Left.Value.Value);
+                lft = getOrBuildValue(whr.Left.Value.Value, false);
             } else {
                 lft = buildWhere(whr.Left);
             }
 
             if(whr.Right.isValue) {
-                rgt = buildValue(whr.Right.Value.Value);
+                rgt = getOrBuildValue(whr.Right.Value.Value, false);
             } else {
                 rgt = buildWhere(whr.Right);
             }
@@ -121,7 +156,23 @@ namespace ParserTester {
             };
         }
 
-        private SqlValue buildValue(Sql.value vlIn) {
+        private SqlValue getOrBuildValue(Sql.value vlIn, bool makeVisible) {
+            string key = vlIn.ToString().ToLower();
+            SqlValue val;
+            if (builtValues.ContainsKey(key)){
+                val = builtValues[key];
+                if (makeVisible) { val.IsSelected = true; }
+                return val;
+            } else{
+                val = buildValue(vlIn, makeVisible);
+                builtValues.Add(key, val);
+                qry.Columns.Add(val);
+                Debug.Assert(val.IsSelected == makeVisible);
+                return val;
+            }
+        }
+
+        private SqlValue buildValue(Sql.value vlIn, bool isVisible) {
             string alias = null;
             Sql.value vl;
             if(vlIn.IsAliassedValue){
@@ -131,7 +182,7 @@ namespace ParserTester {
                 vl = vlIn;
             }
             if(vl.IsField) {
-                return new SqlField(){ Field = vl.Name, Alias = alias };
+                return new SqlField(){ Field = vl.Name, Alias = alias, IsSelected = isVisible };
             }
             if(vl.IsTableField) {
                 Sql.table tbl = vl.Table.Value;
@@ -139,25 +190,27 @@ namespace ParserTester {
                 return new SqlField() {
                     Alias = alias,
                     Field = vl.Name,
-                    Table = qry.Tables[tbl.Identifier] 
+                    Table = qry.Tables[tbl.Identifier],
+                    IsSelected = isVisible
                 };
             }
             if(vl.IsFloat) {
-                return new SqlFloat() { Float = vl.Name, Alias = alias }; 
+                return new SqlFloat() { Float = vl.Name, Alias = alias, IsSelected = isVisible }; 
             }
             if(vl.IsFunction) {
                 return new SqlFunction() {
                     Alias = alias,
                     FunctionName = vl.Name,
-                    Parameters = vl.Params.Value.Select(prm => buildValue(prm)).ToList(),
-                    Schema = getSchema(vl.Schema)
+                    Parameters = vl.Params.Value.Select(prm => getOrBuildValue(prm, false)).ToList(),
+                    Schema = getSchema(vl.Schema),
+                    IsSelected = isVisible
                 };
             }
             if(vl.IsString) {
-                return new SqlString() { Str = vl.Name, Alias = alias };
+                return new SqlString() { Str = vl.Name, Alias = alias, IsSelected = isVisible };
             }
             if(vl.IsInt) {
-                return new SqlInt() { Int = vl.Name, Alias = alias };
+                return new SqlInt() { Int = vl.Name, Alias = alias, IsSelected = isVisible };
             }
             throw new NotImplementedException(vl.ToString());
         }
@@ -174,11 +227,11 @@ namespace ParserTester {
             if (String.IsNullOrEmpty(schemaName)){
                 return null;   
             }
-            if(schemas.ContainsKey(schemaName)) {
-                return schemas[schemaName];
+            if(qry.Schemas.ContainsKey(schemaName)) {
+                return qry.Schemas[schemaName];
             } else {
                 SqlSchema nw = new SqlSchema() { SchemaName = schemaName };
-                schemas.Add(schemaName, nw);
+                qry.Schemas.Add(schemaName, nw);
                 return nw;
             }
         }

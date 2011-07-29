@@ -66,6 +66,11 @@ type table =
             match this with
                     | Table(sch,_) -> sch
                     | AliassedTable(tbl,_) -> tbl.Schema           
+    override this.ToString() =
+            match this with
+                    | Table(None, tblName) -> tblName
+                    | Table(Some(sch), tblName) -> sch.Name + "." + tblName
+                    | AliassedTable(tbl, Alias(alName)) -> tbl.ToString() + " AS " + alName
 
 type value =   
     | Int of string  
@@ -103,6 +108,17 @@ type value =
             match this with
                 | TableField(tbl, _) -> Some(tbl)
                 | _ -> None
+        override this.ToString() =
+            match this with
+                    | Int(fld) -> fld
+                    | Float(fld) -> fld
+                    | String(fld) -> fld
+                    | Field(fld) -> fld
+                    | TableField(tbl, fld) -> tbl.ToString() + "." + fld.ToString()
+                    | Function(Some(sch), fName, vals) -> sch.Name + "." + fName.Name + vals.ToString()
+                    | Function(None, fName, vals) -> fName.Name + vals.ToString()
+                    | AliassedValue(vl, al) -> vl.ToString() + " AS " + al
+
 type dir = Asc | Desc   
     with member this.Name = 
             match this with 
@@ -120,10 +136,12 @@ type op = Eq | Gt | Ge | Lt | Le
 
 type order = Order of (value * dir option)
     with 
-        member this.Name = 
+        member this.Column = 
             match this with
-                | Order(vl, Some(dr)) -> vl.Name + " " + dr.Name
-                | Order(vl, _) -> vl.Name
+                | Order(vl, _) -> vl
+        member this.Direction = 
+            match this with
+                | Order(_, dr) -> dr
 
 type cond = 
     | WhereCond of (where)
@@ -189,11 +207,10 @@ type top =
     | Top of (string)
     | TopPercent of (string)
     with
-        member this.Name =
+        member this.N =
                 match this with
-                    | Top(expr) -> "TOP " + expr
-                    | TopPercent(expr) -> "TOP " + expr + " PERCENT"
-
+                    | Top(expr) -> expr
+                    | TopPercent(expr) -> expr
 
 type sqlStatement =   
     {   TopN : top option;
@@ -205,13 +222,3 @@ type sqlStatement =
     with
         member this.Identifiers =
             List.append (List.map (fun (jn: join) -> jn.RhsIdentifier) this.Joins) [this.Table1.Identifier]
-//        member this.getTableFields (tableName: string) =
-//            this.Columns |> List.choose 
-//                (fun (vl: value) -> match vl with
-//                                    | AliassedValue(TableField(Table(_, tblName), Field(fldName)) , al) -> 
-//                                        if tblName.ToLower() = tableName.ToLower() then Some(fldName, al)
-//                                        else None
-//                                    | TableField(Table(_, tblName), Field(fldName)) -> 
-//                                        if tblName.ToLower() = tableName.ToLower() then Some(fldName, "")
-//                                        else None
-//                                    | _ -> None) 
