@@ -42,10 +42,149 @@ namespace ParserTester {
 
     class ModelBuilder {
         //I introduced this class so that only this class has dependencies on the F# project
-        private SqlQuery qry;
-        private Dictionary<string, SqlValue> builtValues = new Dictionary<string, SqlValue>();
+        //private SqlQuery qry;
+        //private Dictionary<string, SqlValue> builtValues = new Dictionary<string, SqlValue>();
 
-        public SqlQuery build(string SQLString) {
+        public static SqlQuery build(string SQLString) {
+            return append(new SqlQuery(), SQLString);
+        }
+
+        public static SqlQuery append(SqlQuery qry, string SQLString) {
+            if(qry == null) { throw new Exception("Cannot append to empty query"); }
+            if(string.IsNullOrEmpty(SQLString)) { throw new Exception("Empty SQL String cannot be build into a query object"); }
+
+            Sql.sqlStatement stmnt = Parse(SQLString);
+            qry = readTables(qry, stmnt);
+            qry = readJoins(qry, stmnt);
+            qry = readColumns(qry, stmnt);
+            qry = readWhere(qry, stmnt);
+            qry = readTopN(qry, stmnt);
+            qry = readOrderBy(qry, stmnt);
+
+            return qry;
+        }
+
+        private static SqlQuery readOrderBy(SqlQuery qry, Sql.sqlStatement stmnt) {
+            qry.OrderByColumns.AddRange( 
+                stmnt.OrderBy.Select(ob => new SqlOrderBy() {
+                    Column = getOrBuildValue(qry, ob.Column, false),
+                    Dir = ob.Direction.getVal()
+                }
+            ));
+            return qry;
+        }
+
+        private static SqlQuery readTopN(SqlQuery qry, Sql.sqlStatement stmnt) {
+            if(FSharpOption<Sql.top>.get_IsSome(stmnt.TopN)) {
+                Sql.top tp = stmnt.TopN.Value;
+                String tpType = "";
+
+                //If one is top percent and the other is topN we go with topN
+                if(tp.IsTopPercent && qry.Top == null) {
+                    tpType = "PERCENT";
+                }
+
+                if(qry.Top == null) {
+                    qry.Top = new SqlTop() {
+                        N = tp.N,
+                        type = tpType
+                    };
+                } else {
+                    try {
+                        qry.Top.N = Math.Max(int.Parse(qry.Top.N), int.Parse(tp.N)).ToString();
+                    } catch {
+                        //Ignore in runtime throw something in debug.
+                        Debug.Assert(false, "TopN parse Error"); 
+                    }
+                }
+            }
+            return qry;
+        }
+
+        private static SqlQuery readWhere(SqlQuery qry, Sql.sqlStatement stmnt) {
+            if(FSharpOption<Sql.cond>.get_IsSome(stmnt.Where)) {
+                if(qry.Where == null) {
+                    qry.Where = buildWhere(qry, stmnt.Where.Value);
+                } else {
+                    //If there already was one we create a new rootnode for the Where tree
+                    qry.Where = new SqlWhere() {
+                        IsSelected = false,
+                        LeftOperand = qry.Where,
+                        RightOperand = buildWhere(qry, stmnt.Where.Value),
+                        Operator = "AND"
+                    };
+                }
+            }
+            return qry;
+        }
+
+        private static SqlQuery readColumns(SqlQuery qry, Sql.sqlStatement stmnt) {
+            stmnt.Columns.ForEach(col => getOrBuildValue(qry, col, true));
+            return qry;
+        }
+
+        private static SqlQuery readJoins(SqlQuery qry, Sql.sqlStatement stmnt) {
+            qry.JoinItems.AddRange(
+                stmnt
+                .Joins
+                .Select(
+                    jn => new SqlJoin() {
+                        RhsTable = qry.Tables[jn.JoinTable.Identifier],
+                        SqlJoinType = jn.JoinType,
+                        Criteria = buildWhere(qry, jn),
+                    }
+                )
+            );
+
+            var joinedTbls = new List<string>();
+            joinedTbls.AddRange(qry.JoinItems.Select(jn => jn.LhsTable).Where(tbl => tbl != null).Select(tbl => tbl.Identifier));
+            joinedTbls.AddRange(qry.JoinItems.Select(jn => jn.RhsTable).Where(tbl => tbl != null).Select(tbl => tbl.Identifier));
+
+            string tbl1Ident = "";
+            if(qry.Tables.Count > 0) {
+                tbl1Ident = qry.Tables.First().Value.Identifier;
+            }
+
+            var unJoinedTbls = qry.Tables.Keys.Where(ky => !joinedTbls.Contains(ky) && ky != tbl1Ident);
+            unJoinedTbls.ForEach(
+                tblName =>
+                    qry.JoinItems.Add(new SqlJoin() {
+                    RhsTable = qry.Tables[tblName],
+                    SqlJoinType = "FULL OUTER JOIN"
+            }));
+            return qry;
+        }
+
+
+        private static SqlQuery readTables(SqlQuery qry, Sql.sqlStatement stmnt) {
+            Debug.Assert(stmnt != null);
+
+            List<SqlTable> tbls = new List<SqlTable>();
+
+            //Reads Table1
+            tbls.Add(new SqlTable() {
+                Schema = getOrBuildSchema(qry, stmnt.Table1.SchemaName),
+                AliasName = stmnt.Table1.AliasName.getVal(),
+                TableName = stmnt.Table1.TableName
+            });
+
+            //Gets the rest of the tables from the joins
+            tbls.AddRange(stmnt.Joins.Select(jn => new SqlTable() {
+                AliasName = jn.JoinTable.AliasName.getVal(),
+                Schema = getOrBuildSchema(qry, jn.JoinTable.SchemaName),
+                TableName = jn.JoinTable.TableName
+            }));
+
+            foreach(SqlTable tbl in tbls) {
+                if(!qry.Tables.ContainsKey(tbl.Identifier)) {
+                    qry.Tables.Add(tbl.Identifier, tbl);
+                }
+            }
+
+            return qry;
+        }
+
+        private static Sql.sqlStatement Parse(string SQLString) {
             Sql.sqlStatement stmnt;
             try {
                 stmnt = Parser.ParseSql(SQLString);
@@ -54,80 +193,18 @@ namespace ParserTester {
                 //I dont want to throw the parse exception because it would introduce a dependencies between the model and the parser
                 throw new Exception("Parse Error");
             }
-            qry = new SqlQuery();
-
-
-            List<SqlTable> tbls = new List<SqlTable>();
-            tbls.Add(new SqlTable() {
-                    Schema = getSchema(stmnt.Table1.SchemaName),
-                    AliasName = stmnt.Table1.AliasName.getVal(),
-                    TableName = stmnt.Table1.TableName
-                }
-            );
-
-            tbls.AddRange(
-                    stmnt
-                    .Joins
-                    .Select(jn => new SqlTable() {
-                            AliasName = jn.JoinTable.AliasName.getVal(),
-                            Schema = getSchema(jn.JoinTable.SchemaName),
-                            TableName = jn.JoinTable.TableName
-                    }
-                )
-            );
-
-            qry.Tables = tbls.ToDictionary(tbl => tbl.Identifier);
-
-            qry.JoinItems.AddRange(
-                stmnt
-                .Joins
-                .Select(
-                    jn => new SqlJoin() {
-                        RhsTable = qry.Tables[jn.JoinTable.Identifier],
-                        SqlJoinType = jn.JoinType,
-                        Criteria = buildWhere(jn),
-                    }
-                )
-            );
-
-            stmnt.Columns.ForEach(col => getOrBuildValue(col, true));
-
-            if (FSharpOption<Sql.cond>.get_IsSome(stmnt.Where)){
-                qry.Where = buildWhere(stmnt.Where.Value);
-            }
-
-            if (FSharpOption<Sql.top>.get_IsSome(stmnt.TopN)){
-                Sql.top tp = stmnt.TopN.Value;
-                String tpType;
-                if(tp.IsTopPercent) {
-                    tpType = "PERCENT";
-                }else { 
-                    tpType = ""; 
-                }
-
-                qry.Top = new SqlTop() {
-                    N = tp.N,
-                    type = tpType
-                };
-            }
-
-            qry.OrderByColumns.AddRange(stmnt.OrderBy.Select(ob => new SqlOrderBy() {
-                    Column = getOrBuildValue(ob.Column, false),
-                    Dir = ob.Direction.getVal()
-                }
-            ));
-            return qry;
+            return stmnt;
         }
 
-        private SqlWhere buildWhere(Sql.join jn) {
+        private static SqlWhere buildWhere(SqlQuery qry, Sql.join jn) {
             if(FSharpOption<Sql.cond>.get_IsSome(jn.Where)) {
-                return buildWhere(jn.Where.Value);
+                return buildWhere(qry, jn.Where.Value);
             } else {
                 return null;
             }
         }
 
-        private SqlWhere buildWhere(Sql.cond cond) {
+        private static SqlWhere buildWhere(SqlQuery qry, Sql.cond cond) {
             if(cond == null)
                 return null;
             if(cond.isValue) {
@@ -138,15 +215,15 @@ namespace ParserTester {
             SqlValue lft;
             SqlValue rgt;
             if(whr.Left.isValue) {
-                lft = getOrBuildValue(whr.Left.Value.Value, false);
+                lft = getOrBuildValue(qry, whr.Left.Value.Value, false);
             } else {
-                lft = buildWhere(whr.Left);
+                lft = buildWhere(qry, whr.Left);
             }
 
             if(whr.Right.isValue) {
-                rgt = getOrBuildValue(whr.Right.Value.Value, false);
+                rgt = getOrBuildValue(qry, whr.Right.Value.Value, false);
             } else {
-                rgt = buildWhere(whr.Right);
+                rgt = buildWhere(qry, whr.Right);
             }
 
             return new SqlWhere() {
@@ -156,23 +233,22 @@ namespace ParserTester {
             };
         }
 
-        private SqlValue getOrBuildValue(Sql.value vlIn, bool makeVisible) {
-            string key = vlIn.ToString().ToLower();
-            SqlValue val;
-            if (builtValues.ContainsKey(key)){
-                val = builtValues[key];
-                if (makeVisible) { val.IsSelected = true; }
-                return val;
-            } else{
-                val = buildValue(vlIn, makeVisible);
-                builtValues.Add(key, val);
+        private static SqlValue getOrBuildValue(SqlQuery qry, Sql.value vlIn, bool makeVisible) {
+            Debug.Assert(vlIn != null);
+            //Going to build the value anyway. Throw it away if it existed.
+            SqlValue val = buildValue(qry, vlIn, makeVisible);
+
+            if(!qry.Columns.Contains(val, new SqlValue.SqlValueComparer())) {
                 qry.Columns.Add(val);
-                Debug.Assert(val.IsSelected == makeVisible);
-                return val;
             }
+
+            Debug.Assert(val.IsSelected == makeVisible);
+            return val;
         }
 
-        private SqlValue buildValue(Sql.value vlIn, bool isVisible) {
+        private static SqlValue buildValue(SqlQuery qry, Sql.value vlIn, bool isVisible) {
+            Debug.Assert(vlIn != null);
+
             string alias = null;
             Sql.value vl;
             if(vlIn.IsAliassedValue){
@@ -201,8 +277,8 @@ namespace ParserTester {
                 return new SqlFunction() {
                     Alias = alias,
                     FunctionName = vl.Name,
-                    Parameters = vl.Params.Value.Select(prm => getOrBuildValue(prm, false)).ToList(),
-                    Schema = getSchema(vl.Schema),
+                    Parameters = vl.Params.Value.Select(prm => getOrBuildValue(qry, prm, false)).ToList(),
+                    Schema = getOrBuildSchema(qry, vl.Schema),
                     IsSelected = isVisible
                 };
             }
@@ -215,15 +291,17 @@ namespace ParserTester {
             throw new NotImplementedException(vl.ToString());
         }
 
-        private SqlSchema getSchema(FSharpOption<Sql.schema> schemaOp) {
+        private static SqlSchema getOrBuildSchema(SqlQuery qry, FSharpOption<Sql.schema> schemaOp) {
             if(FSharpOption<Sql.schema>.get_IsSome(schemaOp)) {
-                return getSchema(schemaOp.Value.Name);
+                return getOrBuildSchema(qry, schemaOp.Value.Name);
             } else {
                 return null;
             }
         }
 
-        private SqlSchema getSchema(string schemaName) {
+        private static SqlSchema getOrBuildSchema(SqlQuery qry, string schemaName) {
+            Debug.Assert(qry != null);
+
             if (String.IsNullOrEmpty(schemaName)){
                 return null;   
             }

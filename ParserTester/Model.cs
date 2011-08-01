@@ -7,6 +7,15 @@ using System.Diagnostics;
 
 namespace ParserTester
 {
+    public enum SqlValueTypes {
+        Function,
+        Int,
+        String,
+        Float,
+        Field,
+        Where
+    }
+
     public class SqlQuery
     {
         #region Properties
@@ -44,16 +53,15 @@ namespace ParserTester
                 tbl1 = this.Tables.First().Value;
             }
             if(this.OrderByColumns.Count > 0) {
-                ob = "\nORDER BY\n" + this.OrderByColumns.ToString2(",\n\t");
+                ob = "\nORDER BY\n\t" + this.OrderByColumns.ToString2(",\n\t");
             }
 
             return "SELECT\n" 
                 + str.getR(this.Top, "\n\t") 
                 + Columns.Where(col => col.IsSelected).ToString2(",\n\t")
                 + "\nFROM\n\t"
-                + str.getR(tbl1) + "\n\t"
+                + str.getR(tbl1, "\n\t")
                 + JoinItems.ToString2("\n\t") 
-                + this.OrderByColumns.ToString2(", \n\t")
                 + str.getL(this.Where, "\nWHERE\n\t")
                 + ob;
         }
@@ -139,6 +147,8 @@ namespace ParserTester
         public override string ToString() {
             return str.getR(this.LeftOperand) + " " + this.Operator + " " + str.getR(this.RightOperand);
         }
+
+        public override SqlValueTypes ValueType() { return SqlValueTypes.Where; }
     }
 
     
@@ -182,7 +192,31 @@ namespace ParserTester
         public override string ToString() {
             return value + str.getL(this.Alias, " AS ");
         }
-        public bool IsSelected { get; set; } 
+        public bool IsSelected { get; set; }
+        public abstract SqlValueTypes ValueType();
+
+        public class SqlValueComparer : IEqualityComparer<SqlValue> {
+           public bool Equals(SqlValue x, SqlValue y) {
+                if(x.ValueType() != y.ValueType())
+                    return false;
+                if(x.value != y.value)
+                    return false;
+
+                var valTyp = x.ValueType();
+
+                if(valTyp == SqlValueTypes.Float
+                    || valTyp == SqlValueTypes.Int
+                    || valTyp == SqlValueTypes.String) {
+                        return true;
+                }
+
+                return x.ToString() == y.ToString();
+            }
+
+           public int GetHashCode(SqlValue obj) {
+               return 1;
+           }
+        }
     }
 
     public class SqlString : SqlValue {
@@ -190,6 +224,7 @@ namespace ParserTester
             get { return base.value; }
             set { base.value = value; }
         }
+        public override SqlValueTypes ValueType() { return SqlValueTypes.String; }
     }
 
     public class SqlInt : SqlValue {
@@ -197,6 +232,7 @@ namespace ParserTester
             get { return base.value; }
             set { base.value = value; }
         }
+        public override SqlValueTypes ValueType() { return SqlValueTypes.Int; }
     }
 
     public class SqlFloat : SqlValue {
@@ -204,6 +240,7 @@ namespace ParserTester
             get { return base.value; }
             set { base.value = value; }
         }
+        public override SqlValueTypes ValueType() { return SqlValueTypes.Float; }
     }
 
     public class SqlField : SqlValue {
@@ -225,6 +262,8 @@ namespace ParserTester
             }
             return tbl + base.ToString();
         }
+
+        public override SqlValueTypes ValueType() { return SqlValueTypes.Field; }
     }
 
     public class SqlFunction : SqlValue {
@@ -239,5 +278,8 @@ namespace ParserTester
             if (this.Parameters != null) { prms = this.Parameters.ToString2(", "); }
             return str.getR(this.Schema, ".") + this.FunctionName + "(" + prms + ")";
         }
+
+        public override SqlValueTypes ValueType() { return SqlValueTypes.Function; }
     }
+
 }
